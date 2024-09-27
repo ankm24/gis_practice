@@ -1,0 +1,124 @@
+.bi {
+  display: inline-block;
+  width: 1rem;
+  height: 1rem;
+}
+
+/*
+ * 사이드바
+ */
+
+@media (min-width: 768px) {
+
+  span.nav-item {
+    padding-right: 20px;
+  }
+
+  span.text{
+    padding-left: 120px;
+    font-size: 1.3rem;
+  }
+
+  div.nav.group {
+    margin-left: 10px;
+  }
+  span.text2 {
+    padding-left: 129px;
+    font-size: 1.3rem;
+  }
+
+  div.form-check {
+    margin-left: 4rem;
+    height: 1.7rem;
+  }
+  label.form-check-label {
+    margin-left: 4rem;
+
+  }
+}
+
+/*
+ * 네비게이션 바
+ */
+
+/*사이트 맨 위 제목*/
+.navbar-brand {
+  padding-top: .75rem;
+  padding-bottom: .75rem;
+  font-size: 1rem;
+  font-weight: bold;
+  color: #ffffff;
+}
+/*내비게이션 바 높이*/
+div.container-fluid {
+  height: 55px;
+}
+/*내비게이션 바 위쪽 고정*/
+nav.navbar.bg-body-secondary.fixed-top {
+  padding-top: 0.1rem;
+  padding-bottom: 0.1rem;
+}
+
+/*내비게이션 메뉴들 간격*/
+a.nav-link {
+  margin-right: 3rem;
+}
+
+/*검색창*/
+form.d-flex {
+padding-right:1.5rem;
+}
+button.btn.btn-outline-success {
+  border-color: #0d6efd;
+  --bs-btn-hover-bg: #0d6efd;
+}
+
+/*카카오 지도*/
+div#map {
+  margin-top: 3.6rem;
+  position: relative;
+}
+button#btn-map-roadview,#btn-map-terrain {
+  font-size: 15px;
+}
+
+/*카카오 지도 컨트롤*/
+#zoomcontrol {
+  position: absolute;
+  top: 200px;
+  right: 5px;
+  width: 32px;
+  height: 70px;
+  overflow: hidden;
+  z-index: 10;
+  border-radius: 3px;
+  box-shadow: rgba(0, 0, 0, 0.15) 0px 2px 2px 0px;
+  background-color: #ffffff;
+}
+#zoomcontrol span {
+  display: block;
+  width: 36px;
+  height: 35px;
+  text-align: center;
+  cursor: pointer;
+}
+#zoomcontrol img {
+  width: 10px;
+  height: 10px;
+  margin-top: 5px;
+  margin-right: 4px;
+  border: none;
+}
+#zoomcontrol span:first-child {
+  border-bottom: 1px solid #bfbfbf;
+}
+
+/*카카오 지도 로드뷰 실행*/
+#container {overflow: hidden;height: 100%;position: relative;}
+#mapWrapper {width: 100%;height: 100%;z-index: 1;}
+#rvWrapper {width: 50%;height: 100%;top: 0;right: 0;position: absolute;z-index: 0;}
+#container.view_roadview #mapWrapper {width: 50%;}
+#roadviewControl {position: absolute;top: 100px;left: 5px;width: 42px;height: 42px;z-index: 10;cursor: pointer;
+                  background: url("https://t1.daumcdn.net/localimg/localimages/07/2018/pc/common/img_search.png")
+                  0 -450px no-repeat;}
+#roadviewControl.active {background-position: 0 -350px;}
