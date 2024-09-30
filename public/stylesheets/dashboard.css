@@ -11,24 +11,22 @@
 @media (min-width: 768px) {
 
   span.nav-item {
-    padding-right: 20px;
+    padding-right: 10px;
   }
 
   span.text{
-    padding-left: 120px;
+    padding-left: 90px;
     font-size: 1.3rem;
   }
 
-  div.nav.group {
-    margin-left: 10px;
-  }
+
   span.text2 {
-    padding-left: 129px;
+    padding-left: 105px;
     font-size: 1.3rem;
   }
 
   div.form-check {
-    margin-left: 4rem;
+    margin-left: 2rem;
     height: 1.7rem;
   }
   label.form-check-label {
@@ -59,9 +57,8 @@ nav.navbar.bg-body-secondary.fixed-top {
   padding-bottom: 0.1rem;
 }
 
-/*내비게이션 메뉴들 간격*/
-a.nav-link {
-  margin-right: 3rem;
+div.navbar-nav {
+  margin-right: 2rem;
 }
 
 /*검색창*/
@@ -74,10 +71,6 @@ button.btn.btn-outline-success {
 }
 
 /*카카오 지도*/
-div#map {
-  margin-top: 3.6rem;
-  position: relative;
-}
 button#btn-map-roadview,#btn-map-terrain {
   font-size: 15px;
 }
@@ -114,11 +107,14 @@ button#btn-map-roadview,#btn-map-terrain {
 }
 
 /*카카오 지도 로드뷰 실행*/
-#container {overflow: hidden;height: 100%;position: relative;}
-#mapWrapper {width: 100%;height: 100%;z-index: 1;}
-#rvWrapper {width: 50%;height: 100%;top: 0;right: 0;position: absolute;z-index: 0;}
+#container {overflow: hidden;height: 900px;position: relative;margin-top: 3.6rem;}
+#mapWrapper {width: 100%;height: 900px;z-index: 1;}
+#rvWrapper {width: 50%;height: 900px;top: 0;right: 0;position: absolute;z-index: 0;}
 #container.view_roadview #mapWrapper {width: 50%;}
-#roadviewControl {position: absolute;top: 100px;left: 5px;width: 42px;height: 42px;z-index: 10;cursor: pointer;
-                  background: url("https://t1.daumcdn.net/localimg/localimages/07/2018/pc/common/img_search.png")
-                  0 -450px no-repeat;}
-#roadviewControl.active {background-position: 0 -350px;}
+
+/*카카오 지도 키워드 장소검색*/
+#mapWrapper a, #mapWrapper a:hover, #mapWrapper a:active{color: #000;text-decoration: none;}
+#mapWrapper * {font-family: 'Malgun Gothic',dotum,'돋움',sans-serif;font-size: 12px;}
+
+
+

@@ -34,7 +34,7 @@ kakao.maps.event.addListener(rv,'position_changed', function () {
     }
 });
 
-// 마커 이미지 생성
+// 로드뷰 마커 이미지 생성
 var markImage = new kakao.maps.MarkerImage ('https://t1.daumcdn.net/localimg/localimages/07/2018/pc/roadview_minimap_wk_2018.png',
     new kakao.maps.Size(26, 46), {
         // 스프라이트 이미지 사용
@@ -46,14 +46,14 @@ var markImage = new kakao.maps.MarkerImage ('https://t1.daumcdn.net/localimg/loc
     }
     );
 
-// 드래그가 가능한 마커 생성 (기본 마커)
+// 드래그가 가능한 로드뷰 마커 생성 (기본 마커)
 var marker = new kakao.maps.Marker({
     image: markImage,
     position:mapCenter,
     draggable: true
 });
 
-// 마커에 dragend 이벤트 등록
+// 로드뷰 마커에 dragend 이벤트 등록
 kakao.maps.event.addListener(marker,'dragend', function (mouseEvent) {
     // 현재 마커가 놓인 자리의 좌표
     var position = marker.getPosition();
@@ -148,31 +148,131 @@ function toggleOverlay(active) {
     }
 }
 
+var btnVisible = false;
+
 // 지도 위의 로드뷰 버튼을 눌렀을 때 호출되는 함수
 function setRoadviewRoad() {
-    var control = document.getElementById('roadviewControl');
+    var control = document.getElementById('btn-map-roadviewControl');
 
     // 버튼을 눌린 상태가 아니면
-    if (control.className.indexOf('active') === -1) {
-        control.className = 'active';
+    if (!btnVisible) {
+        btnVisible = true;
 
         // 로드뷰 도로 오버레이가 보이게 합니다
         toggleOverlay(true);
+
     } else {
-        control.className = '';
+        btnVisible = false;
 
         // 로드뷰 도로 오버레이 제거
         toggleOverlay(false);
+
+        var position = marker.getPosition();
+        toggleMapWrapper(true,position);
     }
 }
 
-// 로드뷰에서 x버튼을 눌렀을 때 로드뷰를 지도 뒤로 숨기는 함수
-function closeRoadview() {
-    var position = marker.getPosition();
-    toggleMapWrapper(true,position);
+// 마커를 담을 배열
+var markers = [];
+
+// 장소 검색 객체 생성
+var ps = new kakao.maps.services.Places();
+
+// 검색 결과 목록이나 마커를 클릭하면 장소명을 표출할 인포윈도우
+var infowindow = new kakao.maps.infoWindow({zIndex:3});
+
+// 키워드로 장소 검색
+searchPlaces();
+
+// 키워드 검색을 요청하는 함수
+function searchPlaces() {
+    var keyword = document.getElementById('keyword').value;
+
+    if (!keyword.replace(/^\s+|\s+$/g, '')) {
+        alert('키워드를 입력해주세요!');
+        return false;
+    }
+
+    // 장소검색 객체를 통해 키워드로 장소검색 요청
+    ps.keywordSearch(keyword,placesSearchCB);
+}
+
+// 키워드 검색 완료 시 호출되는 콜백함수
+function placesSearchCB(data,status) {
+    if (status === kakao.maps.services.Status.OK) {
+        // 정상적으로 검색이 완료됐으면 검색 목록과 마커 표출
+        displayPlaces(data);
+
+        } else if (status === kakao.maps.services.Status.ZERO_RESULT) {
+        alert('검색 결과가 존재하지 않습니다.');
+        return;
+
+    } else if (status === kakao.maps.services.Status.ERROR) {
+        alert('검색 결과 중 오류가 발생했습니다.');
+    }
+}
+
+    // 검색 결과 목록과 지도에 마커를 표시하는 함수
+function displayPlaces(places) {
+
+    var bounds = new kakao.maps.LatLngBounds();
+
+    // 지도에 표시되고 있는 마커를 제거
+    removeMarker();
+
+    for (var i=0;i<places.length;i++) {
+        // 마커를 생성하고 지도에 표시
+        var placePosition = new kakao.maps.LatLng(places[i].y,places[i].x),
+            marker = addMarker(placePosition,i);
+
+        // 마커와 검색결과 항목에 mouseover 했을 때 해당 장소에 인포윈도우로 장소명 표시
+        (function (marker,title) {
+            kakao.maps.event.addListener(marker,'mouseover',function () {
+                displayInfowindow(marker,title);
+            });
+
+        })(marker,places[i].place_name);
+
+        bounds.extend(placePosition);
+    }
+
+    // 검색된 장소 위치를 기준으로 지도 범위 재설청
+    map.setBounds(bounds);
 }
 
 
+// 마커를 생성하고 지도 위에 마커 표시
+function addMarker(position) {
+
+    var marker = new kakao.maps.Marker({
+        position: position,
+        map: map
+    });
+
+    marker.setMap(map); // 지도 위에 마커 표출
+    markers.push(marker);   // 배열에 생성된 마커 추가
+
+    return marker;
+}
+
+// 지도 위에 표시되고 있는 마커 모두 제거
+function removeMarker() {
+    for (var i=0;i<markers.length;i++) {
+        markers[i].setMap(null);
+    }
+    markers = [];
+}
+
+// 검색결과 목록 또는 마커를 클릭했을 때 호출되는 함수
+// 인포윈도우에 장소명 표시
+function displayInfowindow(marker,title) {
+    var infowindow = new kakao.maps.InfoWindow({
+        content: '<div style="padding:5px;font-size:12px;">' + title + '</div>',
+        removable:true
+    });
+
+    infowindow.open(map,marker);
+}
 
 // 지도 확대 축소를 제어할 수 있는 줌 컨트롤 생성
 function zoomIn() {
@@ -217,22 +317,3 @@ function openMap(worldnav) {
 }
 
 
-
-
-
-//마커 위에 인포윈도우 생성하기
-// 선언
-var iwContent = '<div style="padding:5px;">인포윈도우</div>',
-    iwPosition = new kakao.maps.LatLng(35.869922,128.614814);   // 인포윈도우 표시 위치
-
-// 인포윈도우 생성
-var infowindow = new kakao.maps.InfoWindow({
-    position: iwPosition,
-    content: iwContent,
-    removable:true
-});
-
-// 인포윈도우 마우스오버 이벤트 등록
-kakao.maps.event.addListener(marker,'mouseover',function () {
-    infowindow.open(map,marker);
-});
