@@ -5,7 +5,7 @@ var overlayOn = false,
     mapContainer = document.getElementById('map'),    // 지도를 표시할 div
     rvContainer = document.getElementById('roadview');   // 로드뷰를 표시할 div
 
-var mapCenter = new kakao.maps.LatLng(35.869922, 128.614814),   // 지도의 중심좌표
+var mapCenter = new kakao.maps.LatLng(128.614814,35.869922),   // 지도의 중심좌표
     mapOption = {
         center: mapCenter,  // 지도의 중심좌표
         level: 3    // 지도의 확대 레벨
@@ -178,9 +178,6 @@ var markers = [];
 // 장소 검색 객체 생성
 var ps = new kakao.maps.services.Places();
 
-// 검색 결과 목록이나 마커를 클릭하면 장소명을 표출할 인포윈도우
-var infowindow = new kakao.maps.infoWindow({zIndex:3});
-
 // 키워드로 장소 검색
 searchPlaces();
 
@@ -267,7 +264,7 @@ function removeMarker() {
 // 인포윈도우에 장소명 표시
 function displayInfowindow(marker,title) {
     var infowindow = new kakao.maps.InfoWindow({
-        content: '<div style="padding:5px;font-size:12px;">' + title + '</div>',
+        content: '<div style="padding:5px;font-size:12px;z-index: 3;">' + title + '</div>',
         removable:true
     });
 
@@ -284,35 +281,63 @@ function zoomOut() {
 
 //지도 타입 바꾸기
 
-// 지도에 추가된 지도타입정보를 가지고 있을 변수
-var  currentTypeId;
+function setTerrainMap() {
+    var control = document.getElementById('btn-map-terrain');
+
+    if (!btnVisible) {
+        btnVisible = true;
+
+        setOverlayMapTypeId(true);
+    } else {
+        btnVisible = false;
+
+        setOverlayMapTypeId(false);
+    }
+}
 
 // 내비게이션 메뉴를 클릭하면 호출되는 함수
-function setOverlayMapTypeId(maptype) {
-    var changeMaptype;
+function setOverlayMapTypeId(active) {
+    if (active) {
+        overlayOn = true;
 
-    //maptype에 따라 지도에 추가할 지도타입 결정
-    if (maptype === 'terrain') {
-        // 지형정보 지도타입
-        changeMaptype = kakao.maps.MapTypeId.TERRAIN;
-    }
-    // 이미 등록된 지도 타입이 있으면 제거
-    if (currentTypeId) {
-        map.removeOverlayMapTypeId(currentTypeId);
-    }
-    // maptype에 해당하는 지도타입을 지도에 추가
-    map.addOverlayMapTypeId(changeMaptype);
+        map.addOverlayMapTypeId(kakao.maps.MapTypeId.TERRAIN);
+    } else {
+        overlayOn = false;
 
-    // 지도에 추가된 타입정보 갱신
-    currentTypeId = changeMaptype;
+        map.removeOverlayMapTypeId(kakao.maps.MapTypeId.TERRAIN);
+
+    }
 }
 
 // 브이월드 지도 열기
-function openMap(worldnav) {
-    var openMap;
+function setVworldMap() {
+    var control = document.getElementById('btn-map-vworldmap');
 
-    if (worldnav === 'vworldmap') {
-        location.href = 'vworldmap.html';
+    if (!btnVisible) {
+        btnVisible = true;
+
+        openMap(true);
+    }
+}
+
+function openMap(active) {
+
+    if (active) {
+        overlayOn = true;
+
+        map.OverlayMapTypeId(kakao.maps.MapTypeId.VWORLDMAP);
+
+        marker.setMap(map);
+
+        marker.setPosition(map.getCenter());
+
+        toggleVworld(map.getCenter());
+    } else {
+        overlayOn = false;
+
+        map.removeOverlayMapTypeId(kakao.maps.MapTypeId.VWORLDMAP);
+
+        marker.setMap(null);
     }
 }
 
