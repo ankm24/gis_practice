@@ -1,22 +1,10 @@
-import path from 'path';
+const path = require('path');
 
-export default {
-    mode:'development',
-    entry: './javascripts/openlayers.js',
+module.exports = {
+    devtool: "source-map",
+    entry: ['./src/main.js', './src/kakaomap.js', './src/view.js'],
     output: {
         filename: 'bundle.js',
-        path: path.resolve('dist'),
-    },
-    module: {
-        rules: [
-            {
-                test: /\.m?js$/,
-                exclude: /node_modules/,
-            },
-        ],
-    },
-    resolve: {
-        extensions: ['.js'],
-    },
-    devtool: 'source-map',
+        path: path.join(__dirname, 'public', 'javascripts'),
+    }
 };

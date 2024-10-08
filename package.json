@@ -4,16 +4,18 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "build": "webpack",
-    "serve": "webpack serve --open"
+    "webpack": "webpack --watch --mode=development"
   },
   "dependencies": {
+    "babel-loader": "^9.2.1",
     "bootstrap": "^5.3.3",
-    "cookie-parser": "~1.4.4",
+    "cookie-parser": "^1.0.0",
     "debug": "~2.6.9",
     "express": "^4.21.0",
     "morgan": "~1.9.1",
-    "ol": "^10.2.1"
+    "ol": "^10.2.1",
+    "path": "^0.12.7",
+    "proj4": "^2.12.1"
   },
   "devDependencies": {
     "webpack": "^5.95.0",

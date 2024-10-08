@@ -75,37 +75,6 @@ button#btn-map-roadview,#btn-map-terrain {
   font-size: 15px;
 }
 
-/*카카오 지도 컨트롤*/
-#zoomcontrol {
-  position: absolute;
-  top: 200px;
-  right: 5px;
-  width: 32px;
-  height: 70px;
-  overflow: hidden;
-  z-index: 10;
-  border-radius: 3px;
-  box-shadow: rgba(0, 0, 0, 0.15) 0px 2px 2px 0px;
-  background-color: #ffffff;
-}
-#zoomcontrol span {
-  display: block;
-  width: 36px;
-  height: 35px;
-  text-align: center;
-  cursor: pointer;
-}
-#zoomcontrol img {
-  width: 10px;
-  height: 10px;
-  margin-top: 5px;
-  margin-right: 4px;
-  border: none;
-}
-#zoomcontrol span:first-child {
-  border-bottom: 1px solid #bfbfbf;
-}
-
 /*카카오 지도 로드뷰 실행*/
 #container {overflow: hidden;height: 900px;position: relative;margin-top: 3.6rem;}
 #mapWrapper {width: 100%;height: 900px;z-index: 1;}
