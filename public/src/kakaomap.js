@@ -1,16 +1,9 @@
-var mapContainer = document.getElementById('map'), // 지도를 표시할 div
+var mapContainer = document.getElementById('kakaoMap'),
     mapOption = {
-        center: new kakao.maps.LatLng(36.805679, 128.624043), // 지도의 중심좌표
-        level: 3, // 지도의 확대 레벨
-        draggable: false,
-        disableDoubleClick: true,
-        disableDoubleClickZoom: true,
-        scrollwheel: false,
-        tileAnimation: false,
+        center : new kakao.maps.LatLng(36.805679, 128.624043),
+        level: 3
     };
-
-// 지도를 표시할 div와  지도 옵션으로  지도를 생성합니다
-var kakaoMap = new kakao.maps.Map(mapContainer, mapOption);
+var kakaoMap= new kakao.maps.Map(mapContainer, mapOption);
 kakaoMap.setMinLevel(1);
 kakaoMap.setMaxLevel(9);
 
@@ -25,9 +18,8 @@ const viewSyncOptions = {
     rotation: -0.02307
 }
 
-
 // 마커가 표시될 위치입니다
-var markerPosition = new kakao.maps.LatLng(36.805679, 128.624043);
+var markerPosition = new kakao.maps.LatLng(36.805679, 128.6240439);
 
 // 마커를 생성합니다
 var marker = new kakao.maps.Marker({
@@ -51,4 +43,6 @@ var infowindow = new kakao.maps.InfoWindow({
 // 마커 위에 인포윈도우를 표시합니다. 두번째 파라미터인 marker를 넣어주지 않으면 지도 위에 표시됩니다
 infowindow.open(kakaoMap, marker);
 
-export { kakaoMap, viewSyncOptions, mapContainer, marker }
+
+
+export {kakaoMap, viewSyncOptions, mapContainer, marker}
